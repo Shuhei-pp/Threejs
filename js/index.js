@@ -16,17 +16,9 @@ const init = ()=>{
   const camera = new THREE.PerspectiveCamera(55, width/height)
   camera.position.set(0,0,+1000)
   
-  //箱自体のスペック
-  const geometry = new THREE.BoxGeometry(100,100,100)//座標？
-  const material = new THREE.MeshNormalMaterial()//質感？
 
-  //箱1を作成
-  const box1 = new THREE.Mesh(geometry,material)
-  box1.position.x =-400
-
-  //箱2を作成
-  const box2 = new THREE.Mesh(geometry,material)
-  box2.position.x = 400
+  const box1 = createBox(100,100,100,-400,200)
+  const box2 = createBox(100,100,100,400,200)
 
   
   //シーンに箱を追加？
