@@ -25,12 +25,34 @@ const init = ()=>{
   const boxes = []
 
   boxes.push(createBox(100,100,100,-200,200,200))
+  boxes.push(createBox(100,100,100,0,200,200))
   boxes.push(createBox(100,100,100,200,200,200))
+  boxes.push(createBox(100,100,100,-200,0,200))
+  boxes.push(createBox(100,100,100,0,0,200))
+  boxes.push(createBox(100,100,100,200,0,200))
   boxes.push(createBox(100,100,100,-200,-200,200))
+  boxes.push(createBox(100,100,100,0,-200,200))
   boxes.push(createBox(100,100,100,200,-200,200))
+
+  boxes.push(createBox(100,100,100,-200,200,0))
+  boxes.push(createBox(100,100,100,0,200,0))
+  boxes.push(createBox(100,100,100,200,200,0))
+  boxes.push(createBox(100,100,100,-200,0,0))
+  boxes.push(createBox(100,100,100,0,0,0))
+  boxes.push(createBox(100,100,100,200,0,0))
+  boxes.push(createBox(100,100,100,-200,-200,0))
+  boxes.push(createBox(100,100,100,0,-200,0))
+  boxes.push(createBox(100,100,100,200,-200,0))
+  
+
   boxes.push(createBox(100,100,100,-200,200,-200))
+  boxes.push(createBox(100,100,100,0,200,-200))
   boxes.push(createBox(100,100,100,200,200,-200))
+  boxes.push(createBox(100,100,100,-200,0,-200))
+  boxes.push(createBox(100,100,100,0,0,-200))
+  boxes.push(createBox(100,100,100,200,0,-200))
   boxes.push(createBox(100,100,100,-200,-200,-200))
+  boxes.push(createBox(100,100,100,0,-200,-200))
   boxes.push(createBox(100,100,100,200,-200,-200))
 
   
