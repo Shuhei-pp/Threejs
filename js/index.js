@@ -16,20 +16,29 @@ const init = ()=>{
   const camera = new THREE.PerspectiveCamera(55, width/height)
   camera.position.set(0,0,+1000)
   
+  const boxes = []
 
-  const box1 = createBox(100,100,100,-400,200)
-  const box2 = createBox(100,100,100,400,200)
+  boxes.push(createBox(100,100,100,-200,200,200))
+  boxes.push(createBox(100,100,100,200,200,200))
+  boxes.push(createBox(100,100,100,-200,-200,200))
+  boxes.push(createBox(100,100,100,200,-200,200))
+  boxes.push(createBox(100,100,100,-200,200,-200))
+  boxes.push(createBox(100,100,100,200,200,-200))
+  boxes.push(createBox(100,100,100,-200,-200,-200))
+  boxes.push(createBox(100,100,100,200,-200,-200))
 
   
   //シーンに箱を追加？
-  scene.add(box1,box2)
+  boxes.map((box)=>{
+    scene.add(box)
+  })
 
   
   function tick(){
-    box1.rotation.y += 0.01
-    box1.rotation.x += 0.01
-    box2.rotation.y += 0.01
-    box2.rotation.x += 0.01
+    boxes.map((box)=>{
+      box.rotation.x += 0.01
+      box.rotation.y += 0.01
+    })
     renderer.render(scene,camera)
     
     requestAnimationFrame(tick)//?
