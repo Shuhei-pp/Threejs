@@ -15,7 +15,7 @@ const init = ()=>{
   const scene = new THREE.Scene()
 
   //カメラを作成
-  const camera = new THREE.PerspectiveCamera(55, width/height)
+  const camera = new THREE.PerspectiveCamera(70, width/height)
   camera.position.set(0,0,+1000)//初期位置
   const controls = new THREE.OrbitControls(camera,renderer.domElement)//カメラコントロールの設定
 
