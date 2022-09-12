@@ -1,6 +1,6 @@
 const init = ()=>{
-  const width = 960;
-  const height = 640;
+  const width = window.innerWidth;
+  const height = window.innerHeight;
 
   //レンダラーにシーン(箱が入ってる)とカメラを入れる
   
@@ -44,7 +44,6 @@ const init = ()=>{
   boxes.push(createBox(100,100,100,0,-200,0))
   boxes.push(createBox(100,100,100,200,-200,0))
   
-
   boxes.push(createBox(100,100,100,-200,200,-200))
   boxes.push(createBox(100,100,100,0,200,-200))
   boxes.push(createBox(100,100,100,200,200,-200))
@@ -55,13 +54,11 @@ const init = ()=>{
   boxes.push(createBox(100,100,100,0,-200,-200))
   boxes.push(createBox(100,100,100,200,-200,-200))
 
-  
   //シーンに箱を追加？
   boxes.map((box)=>{
     scene.add(box)
   })
 
-  
   function tick(){
     controls.update()
     boxes.map((box)=>{
@@ -73,6 +70,27 @@ const init = ()=>{
     requestAnimationFrame(tick)//?
   }
   tick()
-  
+
+  function clickBox(event){//クリック時の処理
+    const x = event.clientX
+    const y = event.clientY
+
+    const mouse = new THREE.Vector2()
+    mouse.x = (x/width)*2-1
+    mouse.y = -(y/height)*2+1
+
+    const rayCaster = new THREE.Raycaster()//光を投げる？光線的なのを定義
+    rayCaster.setFromCamera(mouse,camera)
+
+    const intersects = rayCaster.intersectObjects(scene.children)//raycasterとintersect(交わる)したものを取得？笑
+
+    if(intersects[0])
+      scene.remove(intersects[0].object)
+  }
+  //マウスクリックベント作成
+  document.addEventListener('mousedown', clickBox,false)
 }
 window.addEventListener('DOMContentLoaded', init);
+
+
+
