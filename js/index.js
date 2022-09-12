@@ -15,7 +15,7 @@ const init = ()=>{
   const scene = new THREE.Scene()
 
   //カメラを作成
-  const camera = new THREE.PerspectiveCamera(70, width/height)
+  const camera = new THREE.PerspectiveCamera(100, width/height)
   camera.position.set(0,0,+1000)//初期位置
   const controls = new THREE.OrbitControls(camera,renderer.domElement)//カメラコントロールの設定
 
@@ -24,35 +24,15 @@ const init = ()=>{
   
   const boxes = []
 
-  boxes.push(createBox(100,100,100,-200,200,200))
-  boxes.push(createBox(100,100,100,0,200,200))
-  boxes.push(createBox(100,100,100,200,200,200))
-  boxes.push(createBox(100,100,100,-200,0,200))
-  boxes.push(createBox(100,100,100,0,0,200))
-  boxes.push(createBox(100,100,100,200,0,200))
-  boxes.push(createBox(100,100,100,-200,-200,200))
-  boxes.push(createBox(100,100,100,0,-200,200))
-  boxes.push(createBox(100,100,100,200,-200,200))
+  const boxXYZ = [-400,-200,0,200,400]
 
-  boxes.push(createBox(100,100,100,-200,200,0))
-  boxes.push(createBox(100,100,100,0,200,0))
-  boxes.push(createBox(100,100,100,200,200,0))
-  boxes.push(createBox(100,100,100,-200,0,0))
-  boxes.push(createBox(100,100,100,0,0,0))
-  boxes.push(createBox(100,100,100,200,0,0))
-  boxes.push(createBox(100,100,100,-200,-200,0))
-  boxes.push(createBox(100,100,100,0,-200,0))
-  boxes.push(createBox(100,100,100,200,-200,0))
-  
-  boxes.push(createBox(100,100,100,-200,200,-200))
-  boxes.push(createBox(100,100,100,0,200,-200))
-  boxes.push(createBox(100,100,100,200,200,-200))
-  boxes.push(createBox(100,100,100,-200,0,-200))
-  boxes.push(createBox(100,100,100,0,0,-200))
-  boxes.push(createBox(100,100,100,200,0,-200))
-  boxes.push(createBox(100,100,100,-200,-200,-200))
-  boxes.push(createBox(100,100,100,0,-200,-200))
-  boxes.push(createBox(100,100,100,200,-200,-200))
+  boxXYZ.map((x)=>{
+    boxXYZ.map((y)=>{
+      boxXYZ.map((z)=>{
+        boxes.push(createBox(100,100,100,x,y,z))
+      })
+    })
+  })
 
   //シーンに箱を追加？
   boxes.map((box)=>{
