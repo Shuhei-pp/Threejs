@@ -39,7 +39,7 @@ const init = ()=>{
     scene.add(box)
   })
 
-  function tick(){
+  function tick(){//毎フレームごとに実行
     controls.update()
     boxes.map((box)=>{
       box.rotation.x += 0.01
