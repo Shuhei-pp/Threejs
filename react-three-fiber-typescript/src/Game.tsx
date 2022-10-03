@@ -3,24 +3,33 @@ import { Canvas } from '@react-three/fiber'
 import { DoubleSide } from 'three';
 import { OrbitControls } from '@react-three/drei'
 
-export const Game:()=>JSX.Element = () => {
+export const Game: () => JSX.Element = () => {
+  const positionArray = [-30,-10,10,30]
   return (
-    <Canvas camera={{ fov: 50, position: [100, 100, 100] }} style={{ width: "100vh", height: "100vh" }} shadows>
+    <Canvas camera={{ fov: 50, position: [150, 150, 150] }} style={{ width: "100vh", height: "100vh" }} shadows>
       
       <OrbitControls />
       
       <directionalLight
-        position={[100, 70, -60]}
-        intensity={2}
-        shadow-mapSize-width={2048} // 描画精度
+        position={[100, 60, -62]}
+        intensity={1}
+        shadow-mapSize-width={2048}
         shadow-mapSize-height={2048}
         castShadow
       />
-      
-      <mesh position={[0, 50, 0]} castShadow receiveShadow>
-        <boxGeometry args={[1, 100, 1]} />
-        <meshPhongMaterial color={"blue"}/>
-      </mesh>
+
+      {positionArray.map((x, i) => {
+        return(
+          positionArray.map((y, j) => { 
+            return (
+              <mesh position={[x, 50, y]} key={i * 4 + j} castShadow receiveShadow>
+                <boxGeometry args={[1, 100, 1]} />
+                <meshPhongMaterial color={"blue"} />
+              </mesh>
+            )
+          })
+        )
+      })}
 
       <mesh position={[0, 0, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <planeGeometry args={[100, 100]} />
