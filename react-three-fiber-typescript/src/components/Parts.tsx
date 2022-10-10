@@ -1,4 +1,5 @@
 
+import React from "react"
 import { positionArray } from "../Game"
 
 export const Marble: React.FC<{ xIndex: number, yIndex: number, height: number, color: string }> = ({ xIndex, yIndex, height, color }) => {

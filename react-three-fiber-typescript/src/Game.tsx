@@ -2,16 +2,21 @@ import React,{ useState } from 'react'
 import { Canvas, events, ThreeEvent,MeshProps} from '@react-three/fiber'
 import { DoubleSide, Mesh } from 'three';
 import { OrbitControls } from '@react-three/drei'
-import { Marble } from './components/obj';
-import { SettingComponent } from './components/setting';
+import { Marble } from './components/Parts';
+import { SettingComponent } from './components/Setting';
+import { calculateWinner } from './utils';
 
 export const positionArray = [-30, -10, 10, 30]
 
 export const Game: () => JSX.Element = () => {
   const [board, setBoard] = useState<string[][]>([[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]])
-  const [isRedPlayer, setIsRedPlayer]=useState<boolean>(true)
+  const [isRedPlayer, setIsRedPlayer] = useState<boolean>(true)
+  const [winner,setWinner] = useState<String|null>(null)
 
   const handleClickStick: (stickNumber: number, event: ThreeEvent<MouseEvent>) => void = (stickNumber, event) => {
+    if (winner) {
+      return
+    }
     event.stopPropagation()//イベントが透過しないように
     let boardStatus = board
     if (boardStatus[stickNumber].length >= 4) {
@@ -21,6 +26,7 @@ export const Game: () => JSX.Element = () => {
     boardStatus[stickNumber].push(isRedPlayer ? "R" : "B")
     setBoard(boardStatus)
     setIsRedPlayer(!isRedPlayer)
+    setWinner(calculateWinner(board))
   }
 
   const Stick: React.FC<{ x: number, y: number, stickPosition: number }> = ({ x, y, stickPosition }) => {
@@ -36,7 +42,15 @@ export const Game: () => JSX.Element = () => {
 
   return (
     <div style={{position:"relative"}}>
-      <p style={{position:"absolute",color:"#ffffff",zIndex:"1" }}>{isRedPlayer ? "Red" : "Blue" }プレイヤーの番です.</p>
+      <p style={{ position: "absolute", color: "#ffffff", zIndex: "1" }}>
+        {
+          winner ?
+            winner == "R" ?
+              "winner:Red" : "winner:Blue" 
+            :(isRedPlayer ?
+              "Red" : "Blue") + "プレイヤーの番です."
+        }
+      </p>
       <Canvas
         camera={{ fov: 50, position: [150, 150, 150] }}
         style={{ width: "100vh", height: "100vh"}}
