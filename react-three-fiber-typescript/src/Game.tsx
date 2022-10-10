@@ -1,58 +1,56 @@
 import React,{ useState } from 'react'
-import { Canvas, events, ThreeEvent } from '@react-three/fiber'
-import { DoubleSide, EqualStencilFunc } from 'three';
+import { Canvas, events, ThreeEvent,MeshProps} from '@react-three/fiber'
+import { DoubleSide, Mesh } from 'three';
 import { OrbitControls } from '@react-three/drei'
+import { Marble } from './components/obj';
+import { SettingComponent } from './components/setting';
 
-// type TypeBoard = {
-  
-// }
+export const positionArray = [-30, -10, 10, 30]
 
 export const Game: () => JSX.Element = () => {
   const [board, setBoard] = useState<string[][]>([[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]])
   const [isRedPlayer, setIsRedPlayer]=useState<boolean>(true)
-  const positionArray = [-30, -10, 10, 30]
 
   const handleClickStick: (stickNumber: number, event: ThreeEvent<MouseEvent>) => void = (stickNumber, event) => {
     event.stopPropagation()//イベントが透過しないように
     let boardStatus = board
+    if (boardStatus[stickNumber].length >= 4) {
+      window.alert("縦に4つよりも多く置くことはできません。")
+      return
+    }
     boardStatus[stickNumber].push(isRedPlayer ? "R" : "B")
     setBoard(boardStatus)
     setIsRedPlayer(!isRedPlayer)
   }
+
+  const Stick: React.FC<{ x: number, y: number, stickPosition: number }> = ({ x, y, stickPosition }) => {
+    return <mesh
+      position={[x, 50, y]}
+      onClick={(event) => {handleClickStick(stickPosition,event) }}
+      castShadow receiveShadow
+      >
+        <boxGeometry args={[2, 100, 2]} />
+        <meshPhongMaterial color="#3f7b9d" />
+    </mesh>
+  }
+
   return (
-    <>
-      <h1>{isRedPlayer ? "Red" : "Blue" }</h1>
+    <div style={{position:"relative"}}>
+      <p style={{position:"absolute",color:"#ffffff",zIndex:"1" }}>{isRedPlayer ? "Red" : "Blue" }プレイヤーの番です.</p>
       <Canvas
         camera={{ fov: 50, position: [150, 150, 150] }}
-        style={{ width: "100vh", height: "100vh" }}
+        style={{ width: "100vh", height: "100vh"}}
         shadows
       >
-        <OrbitControls />
-        <directionalLight
-          position={[100, 60, -62]}
-          intensity={1}
-          shadow-mapSize-width={2048}
-          shadow-mapSize-height={2048}
-          castShadow
-        />
-        <color attach="background" args={['#1e1e1e']} />
+        
+        <SettingComponent/>
 
         {positionArray.map((x, i) => {
-        return(
-          positionArray.map((y, j) => { 
-            const stickPosition: number = i * 4 + j
-            return (
-              <mesh
-              position={[x, 50, y]}
-              key={stickPosition}
-                onClick={(event) => {handleClickStick(stickPosition,event) }}
-              castShadow receiveShadow
-              >
-                <boxGeometry args={[2, 100, 2]} />
-                <meshPhongMaterial color="#3f7b9d" />
-              </mesh>
-            )
-          })
+          return(
+            positionArray.map((y, j) => { 
+              const stickPosition: number = i * 4 + j
+              return <Stick x={x} y={y} stickPosition={stickPosition } key={stickPosition} />
+            })
           )
         })}
 
@@ -62,31 +60,15 @@ export const Game: () => JSX.Element = () => {
           return(
             marbles.map((color, height) => {
               if (color === "R") {
-                return (
-                  <mesh position={[positionArray[i], height * 16+8, positionArray[j]]} key={height*16+i*4+j} castShadow receiveShadow>
-                    <sphereBufferGeometry args={[8, 30, 30]} attach="geometry" />
-                    <meshStandardMaterial color="hotpink" />
-                  </mesh>
-                )
+                return <Marble xIndex={i} yIndex={j} height={height} color={"hotpink"} key={height * 16 + i * 4 + j} />
               }
               else if(color === "B"){
-                return (
-                  <mesh position={[positionArray[i], height* 16+8, positionArray[j]]} key={height*16+i*4+j} castShadow receiveShadow>
-                    <sphereBufferGeometry args={[8, 30, 30]} attach="geometry" />
-                    <meshStandardMaterial color="Blue" />
-                  </mesh>
-                )
+                return <Marble xIndex={i} yIndex={j} height={height} color={"blue"} key={height * 16 + i * 4 + j}/>
               }  
             })
           )
         })}
-
-        <mesh position={[0, 0, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-          <planeGeometry args={[100, 100]} />
-          <meshStandardMaterial color="#E5E5E5" side={DoubleSide} />
-        </mesh>
-
       </Canvas>
-    </>
+    </div>
   )
 }
